@@ -1,22 +1,21 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useContext } from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
 import { IActivity } from "../../../app/models/activity";
 import { v4 as uuid } from "uuid";
+import ActivityStore from "../../../app/stores/activityStore";
+
 interface IProps {
-  setEditMode: (editMode: boolean) => void;
   activity: IActivity;
-  createActivity: (activity: IActivity) => void;
-  editActivity: (activity: IActivity) => void;
-  submitting: boolean;
 }
 
-const ActivityForm: React.FC<IProps> = ({
-  setEditMode,
-  activity: initialFormState,
-  createActivity,
-  editActivity,
-  submitting,
-}) => {
+const ActivityForm: React.FC<IProps> = ({ activity: initialFormState }) => {
+  const {
+    createActivity,
+    editActivity,
+    cancelFromOpen,
+    submitting,
+  } = useContext(ActivityStore);
+
   const initializeForm = () => {
     if (initialFormState) {
       return initialFormState;
@@ -35,15 +34,15 @@ const ActivityForm: React.FC<IProps> = ({
 
   const [activity, setActivity] = useState<IActivity>(initializeForm());
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (activity.id.length === 0) {
       let newActivity = {
         ...activity,
         id: uuid(),
       };
-      createActivity(newActivity);
+      await createActivity(newActivity);
     } else {
-      editActivity(activity);
+      await editActivity(activity);
     }
   };
 
@@ -53,7 +52,7 @@ const ActivityForm: React.FC<IProps> = ({
     const { name, value } = event.currentTarget;
     setActivity({ ...activity, [name]: value });
   };
-
+  console.log(submitting);
   return (
     <Segment clearing>
       <Form onSubmit={handleSubmit}>
@@ -103,7 +102,7 @@ const ActivityForm: React.FC<IProps> = ({
           content="Submit"
         />
         <Button
-          onClick={() => setEditMode(false)}
+          onClick={cancelFromOpen}
           floated="right"
           type="submit"
           content="Cancel"
