@@ -67,10 +67,11 @@ class ActivityStore {
         });
       } catch (error) {
         console.error(error);
+      } finally {
+        runInAction("getting activity complete", () => {
+          this.loadingInitial = false;
+        });
       }
-      runInAction("getting activity complete", () => {
-        this.loadingInitial = false;
-      });
     }
   };
 

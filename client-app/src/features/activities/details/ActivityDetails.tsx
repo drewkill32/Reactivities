@@ -25,10 +25,12 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
       await loadActivity(match.params.id);
     };
     fetchData();
-  }, [loadActivity, match.params.id]);
+  }, [loadActivity, match.params.id, history]);
 
   if (loadingInitial || !activity)
     return <LoadingComponent content="Loading activity ..." />;
+
+  if (!activity) return <h2>Activity not found.</h2>;
 
   return (
     <Grid>

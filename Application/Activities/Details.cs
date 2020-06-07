@@ -4,6 +4,8 @@ using MediatR;
 using System.Threading.Tasks;
 using System.Threading;
 using Persistence;
+using Application.Errors;
+using System.Net;
 
 namespace Application.Activities
 {
@@ -26,6 +28,11 @@ namespace Application.Activities
             public async Task<Domain.Activity> Handle(Query request, CancellationToken cancellationToken)
             {
                 var activity = await _context.Activites.FindAsync(request.Id);
+                if (activity == null)
+                {
+                    throw new RestException(HttpStatusCode.NotFound,
+                    new { activity = "Not found" });
+                }
                 return activity;
             }
         }
