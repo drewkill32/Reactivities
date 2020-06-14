@@ -3,14 +3,17 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Domain;
+using Microsoft.AspNetCore.Identity;
 using Persistence;
 
 namespace API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
 
@@ -21,7 +24,8 @@ namespace API
                 {
                     var context = services.GetRequiredService<DataContext>();
                     context.Database.Migrate();
-                    Seed.SeedData(context);
+                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                    await Seed.SeedData(context, userManager);
 
 
                 }
