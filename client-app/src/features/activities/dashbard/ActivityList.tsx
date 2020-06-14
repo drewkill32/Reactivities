@@ -5,10 +5,10 @@ import ActivityStore from "../../../app/stores/activityStore";
 import ActivityListItem from "./ActivityListItem";
 
 const ActivityList: React.FC = () => {
-  const { activitesByDate } = useContext(ActivityStore);
+  const { activitiesByDate } = useContext(ActivityStore);
   return (
     <Fragment>
-      {activitesByDate.map(([group, activities]) => (
+      {activitiesByDate.map(([group, activities]) => (
         <Fragment>
           <Label key={group} size="large" color="blue">
             {group}
