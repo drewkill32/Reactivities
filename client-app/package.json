@@ -15,7 +15,7 @@
     "@types/revalidate": "^1.1.2",
     "@types/semantic-ui": "^2.2.7",
     "@types/uuid": "^8.0.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "date-fns": "^2.0.0",
     "final-form": "4.18.2",
     "mobx": "^5.15.4",
